@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chat with Haifa · 和海法聊天</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="phone" id="phone">
+  <div class="island"></div>
+  <div class="scr" id="lock" role="button" aria-label="Tap to start">
+    <div class="lk"><svg width="14" height="18" viewBox="0 0 14 18" fill="none" stroke="#fff" stroke-width="1.8"><rect x="1.5" y="8" width="11" height="9" rx="2" fill="#fff" stroke="none"/><path d="M4 8V5.5a3 3 0 0 1 6 0V8"/></svg></div>
+    <div class="date" id="lkDate"></div>
+    <div class="time" id="lkTime"></div>
+    <div class="quick" aria-hidden="true">
+      <span><svg width="16" height="24" viewBox="0 0 16 24" fill="#fff"><path d="M3 0h10v4l-3 5v13a2 2 0 0 1-2 2 2 2 0 0 1-2-2V9L3 4z"/></svg></span>
+      <span><svg width="24" height="20" viewBox="0 0 24 20" fill="#fff"><path d="M8 0h8l2 3h4a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4zm4 6a5 5 0 1 0 0 10 5 5 0 0 0 0-10z"/></svg></span>
+    </div>
+    <div class="hint">Tap anywhere to start</div>
+    <div class="homebar"></div>
+  </div>
+
+  <div class="scr hide gone" id="call" aria-live="polite">
+    <div class="poster"></div>
+    <div class="top">
+      <div class="label" id="callLabel">mobile</div>
+      <div class="who">Haifa<small>海法</small></div>
+      <div class="avatar" role="img" aria-label="Haifa"></div>
+    </div>
+    <div class="subs" id="subs"></div>
+    <div class="ringing">
+      <div class="mini">
+        <button id="remind"><i><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="11" r="7"/><path d="M10 7v4l2.5 2M3 3l3-2M17 3l-3-2"/></svg></i>Remind Me</button>
+        <button id="msgBtn"><i><svg width="20" height="18" viewBox="0 0 20 18" fill="#fff"><path d="M10 0C4.5 0 0 3.6 0 8c0 2.4 1.3 4.6 3.4 6.1L2.5 18l4.2-2.5c1 .3 2.1.5 3.3.5 5.5 0 10-3.6 10-8S15.5 0 10 0z"/></svg></i>Message</button>
+      </div>
+      <div class="slider" id="slider">
+        <div class="knob" id="knob" role="button" aria-label="Answer call"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg></div>
+        <div class="txt">slide to answer</div>
+      </div>
+    </div>
+    <div class="live-ui">
+      <div class="grid" aria-hidden="true">
+        <div><i><svg viewBox="0 0 28 28" fill="#fff"><path d="M4 10h5l7-6v20l-7-6H4z"/><path d="M20 9a7 7 0 0 1 0 10M23 6a11 11 0 0 1 0 16" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/></svg></i>speaker</div>
+        <div><i><svg viewBox="0 0 28 28" fill="#fff"><rect x="2" y="7" width="17" height="14" rx="3"/><path d="M20 12l6-4v12l-6-4z"/></svg></i>FaceTime</div>
+        <div><i><svg viewBox="0 0 28 28" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><rect x="10" y="3" width="8" height="14" rx="4" fill="#fff"/><path d="M6 13a8 8 0 0 0 16 0M14 21v4M4 4l20 20"/></svg></i>mute</div>
+        <div><i><svg viewBox="0 0 28 28" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M14 6v16M6 14h16"/></svg></i>add</div>
+        <div style="visibility:hidden"></div>
+        <div><i><svg viewBox="0 0 28 28" fill="#fff"><circle cx="7" cy="6" r="2.4"/><circle cx="14" cy="6" r="2.4"/><circle cx="21" cy="6" r="2.4"/><circle cx="7" cy="13" r="2.4"/><circle cx="14" cy="13" r="2.4"/><circle cx="21" cy="13" r="2.4"/><circle cx="7" cy="20" r="2.4"/><circle cx="14" cy="20" r="2.4"/><circle cx="21" cy="20" r="2.4"/></svg></i>keypad</div>
+      </div>
+      <button class="endbtn" id="endBtn" aria-label="End call"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg></button>
+    </div>
+    <div class="homebar"></div>
+  </div>
+
+  <div class="status"><span id="sbTime">9:41</span>
+    <span class="icons">
+      <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 2.6c2.3 0 4.4.9 6 2.4l1.1-1.2A10.2 10.2 0 0 0 8 1 10.2 10.2 0 0 0 .9 3.8L2 5c1.6-1.5 3.7-2.4 6-2.4zm0 3.2c1.4 0 2.7.5 3.7 1.4l1.1-1.2A7 7 0 0 0 8 4.2a7 7 0 0 0-4.8 1.8l1.1 1.2c1-.9 2.3-1.4 3.7-1.4zM8 9l-1.9 2L8 13l1.9-2z"/></svg>
+      <svg width="27" height="13" viewBox="0 0 27 13" fill="none"><rect x=".5" y=".5" width="23" height="12" rx="3.5" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="20" height="9" rx="2" fill="currentColor"/><path d="M25 4.5v4c.8-.3 1.3-1.1 1.3-2s-.5-1.7-1.3-2z" fill="currentColor" opacity=".45"/></svg>
+    </span></div>
+
+  <div class="nav">
+    <button class="back" aria-label="Back" tabindex="-1"><svg width="12" height="20" viewBox="0 0 12 20"><path d="M10 2 2 10l8 8" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><b>中</b></button>
+    <button class="contact" id="contact" aria-label="Chat settings and full transcript">
+      <div class="ava" role="img" aria-label="Haifa"></div>
+      <div class="cname">Haifa 海法 <svg viewBox="0 0 6 10"><path d="m1 1 4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg></div>
+    </button>
+    <div class="navr" aria-hidden="true"><svg width="26" height="18" viewBox="0 0 26 18" fill="currentColor"><rect x="0" y="1" width="18" height="16" rx="4"/><path d="M19.5 7.2 25 3.5v11l-5.5-3.7z"/></svg></div>
+  </div>
+
+  <main id="thread" aria-live="polite">
+    <div class="stamp"><b>iMessage</b><br>Today <span id="now"></span></div>
+  </main>
+
+  <div class="bottom">
+    <div class="sugg" id="sugg" aria-label="Questions you can ask"></div>
+    <div class="bar">
+      <div class="plus" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+      <div class="field" id="field"><span id="ftext">Tap a question above</span>
+        <span class="mic" aria-hidden="true"><svg width="12" height="18" viewBox="0 0 12 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="1" width="6" height="10" rx="3"/><path d="M1 8a5 5 0 0 0 10 0M6 13v4"/></svg></span>
+        <span class="send" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M7 12V2M2.5 6.5 7 2l4.5 4.5" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
+    </div>
+  </div>
+
+  <div id="outro" aria-live="polite">
+    <div class="oclock"><div class="date" id="oDate"></div><div class="time" id="oTime"></div></div>
+    <div class="black"></div>
+    <div class="bye"><b>再见</b><span>Zàijiàn · Goodbye</span><small>Thanks for chatting with Haifa 海法</small><button class="replay" id="replay">↻ Replay</button></div>
+  </div>
+  <div class="scrim" id="scrim"></div>
+  <div class="sheet" role="dialog" aria-label="Settings and transcript">
+    <div class="grab"></div>
+    <div class="sh"><span style="width:44px"></span><b>Haifa 海法</b><button id="done">Done</button></div>
+    <div class="sb">
+      <div class="glabel">Display</div>
+      <div class="group">
+        <label class="cell">Show Pinyin <input type="checkbox" class="sw" id="swPy" checked></label>
+        <label class="cell">Show English <input type="checkbox" class="sw" id="swEn" checked></label>
+        <label class="cell">Sounds <input type="checkbox" class="sw" id="swSfx" checked></label>
+      </div>
+      <div class="glabel">Full self-introduction · 自我介绍</div>
+      <div class="group" id="transcript"></div>
+      <button class="copy" id="copy">Copy Transcript</button>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts load in this order because later files use things defined in earlier ones -->
+<script src="js/data.js"></script>     <!-- questions & answers -->
+<script src="js/utils.js"></script>    <!-- small shared helpers -->
+<script src="js/sound.js"></script>    <!-- ringtone + message sounds -->
+<script src="js/chat.js"></script>     <!-- the iMessage conversation -->
+<script src="js/outro.js"></script>    <!-- goodbye animation -->
+<script src="js/call.js"></script>     <!-- lock screen + phone call (runs first on screen) -->
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recorder · Haifa's Chinese intro</title>
+<style>
+  body{font-family:system-ui,sans-serif;background:#f6f1e8;color:#1f1a17;max-width:760px;margin:0 auto;padding:24px}
+  h1{font-size:20px;margin:0 0 4px} .sub{color:#7a6f66;font-size:14px;margin:0 0 20px}
+  .card{background:#fff;border:1px solid #e7dfd2;border-radius:14px;padding:16px;margin-bottom:12px}
+  .id{font:12px ui-monospace,monospace;color:#c8312b}
+  .zh{font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;font-size:24px;margin:6px 0 2px}
+  .py{color:#c8312b;font-size:15px} .en{color:#7a6f66;font-size:14px;margin-top:2px}
+  .ctl{display:flex;gap:8px;align-items:center;margin-top:12px;flex-wrap:wrap}
+  button,a.dl{font:500 14px system-ui;border:1px solid #e7dfd2;background:#fff;border-radius:10px;padding:8px 14px;cursor:pointer;color:#1f1a17;text-decoration:none}
+  button.rec{background:#c8312b;color:#fff;border-color:#c8312b} button.rec.on{background:#1f1a17;border-color:#1f1a17}
+  a.dl{background:#2f7d63;color:#fff;border-color:#2f7d63} audio{height:34px}
+  .t{font:13px ui-monospace,monospace;color:#7a6f66}
+  .err{background:#f8e3df;padding:12px;border-radius:10px;display:none}
+</style>
+</head>
+<body>
+<h1>Recorder for my Chinese intro</h1>
+<p class="sub">Record each answer, listen back, and press <b>Download</b>. Each file is already named to match its question (e.g. <code>name.webm</code>), so send them back as they are. Use Chrome or Edge.</p>
+<div class="err" id="err"></div>
+<div id="list"></div>
+<script src="js/data.js"></script>
+<script src="js/utils.js"></script>
+<script>
+/* recorder.html — record each answer in your browser and download it.
+   Open via a local server (python3 -m http.server) in Chrome or Edge. */
+let stream = null;
+async function getMic(){
+  if (stream) return stream;
+  try { stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true, noiseSuppression:true}}); return stream; }
+  catch (e) {
+    const el = document.getElementById("err");
+    el.style.display = "block";
+    el.textContent = "Microphone blocked: " + e.message + ". Allow mic access in the address bar, or record on your phone and name the files as shown.";
+    throw e;
+  }
+}
+DATA.forEach(d => {
+  const card = document.createElement("div"); card.className = "card";
+  card.innerHTML = `<div class="id">${d.id}.webm</div>` +
+    d.a.map((s, i) => `<div class="zh">${plainChinese(s)}</div><div class="py">${plainPinyin(s)}</div><div class="en">${d.en[i]}</div>`).join("") +
+    `<div class="ctl"><button class="rec">● Record</button><span class="t"></span><span class="out"></span></div>`;
+  document.getElementById("list").appendChild(card);
+
+  const btn = card.querySelector(".rec"), timer = card.querySelector(".t"), out = card.querySelector(".out");
+  let recorder = null, chunks = [], tick = null, started = 0;
+  btn.onclick = async () => {
+    if (recorder && recorder.state === "recording"){ recorder.stop(); return; }
+    recorder = new MediaRecorder(await getMic()); chunks = [];
+    recorder.ondataavailable = e => chunks.push(e.data);
+    recorder.onstop = () => {
+      clearInterval(tick); btn.classList.remove("on"); btn.textContent = "● Re-record";
+      const url = URL.createObjectURL(new Blob(chunks, {type: recorder.mimeType}));
+      out.innerHTML = `<audio controls src="${url}"></audio> <a class="dl" href="${url}" download="${d.id}.webm">Download</a>`;
+    };
+    recorder.start(); started = Date.now();
+    btn.classList.add("on"); btn.textContent = "■ Stop"; out.innerHTML = "";
+    tick = setInterval(() => timer.textContent = ((Date.now() - started) / 1000).toFixed(1) + "s", 100);
+  };
+});
+</script>
+</body>
+</html>
