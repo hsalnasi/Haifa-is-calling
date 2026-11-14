@@ -1,10 +1,12 @@
 # Haifa-is-calling
-
+<p align="center">
+  <img src="https://raw.githubusercontent.com/hsalnasi/haifa-is-calling/main/ReadmeAssest/Season%206%20Nbc%20GIF%20by%20The%20Office.gif" width="480" alt="Season 6 Nbc GIF by The Office">
+</p>
 
 A self-introduction that starts as a phone call and turns into a text chat. Visitors tap questions and get your answers written out (in any language) with your own voice recordings.
 
 <p align="center">
-  <img src="ReadmeAssest/demo.gif" width="320" alt="Demo of Haifa-is-calling">
+  <img src="ReadmeAssest/demo.gif" width="720" alt="Demo of Haifa-is-calling">
 </p>
 
 
