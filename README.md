@@ -3,8 +3,9 @@
 
 A self-introduction that starts as a phone call and turns into a text chat. Visitors tap questions and get your answers written out (in any language) with your own voice recordings.
 
-
-https://github.com/user-attachments/assets/3e27a4a6-0a71-44c8-b2d8-a2fe417aa3a6
+<p align="center">
+  <img src="ReadmeAssest/demo.gif" width="320" alt="Demo of Haifa-is-calling">
+</p>
 
 
 
