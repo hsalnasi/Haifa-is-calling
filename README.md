@@ -2,9 +2,9 @@
   <img src="ReadmeAssest/office.gif" width="480" alt="The Office GIF">
 </p>
 
-<h1 align="center"><a src="https://hsalnasi.github.io/Haifa-is-calling> /"</a>Haifa-is-calling</h1>
-
-
+<h1 align="center">
+  <a href="https://hsalnasi.github.io/haifa-is-calling/">Haifa-is-calling</a>
+</h1>
 A self-introduction that starts as a phone call and turns into a text chat. Visitors tap questions and get your answers written out (in any language) with your own voice recordings.
 
 <p align="center">
