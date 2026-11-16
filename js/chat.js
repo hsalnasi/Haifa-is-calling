@@ -15,7 +15,6 @@ const sugg   = $("#sugg");       // the row of question buttons
 const field  = $("#field");      // the "iMessage" input box
 const ftext  = $("#ftext");      // the text inside it
 
-const hasAudio = {};             // which answers have a recording, e.g. hasAudio.name = true
 let busy = false;                // true while an answer is in progress (buttons are disabled)
 let playing = null;              // the voice message currently playing, if any
 let lastSide = null;             // "in" (Haifa) or "out" (visitor): who sent the last bubble
@@ -81,13 +80,9 @@ function waveformHTML(id){
   return html;
 }
 
-// The gray voice-message bubble with play button, waveform and duration
+// The gray voice-message bubble with play button, waveform and duration.
+// It always tries to load audio/<id>.mp3; if that file is missing, the bubble greys out and says "soon".
 function voiceBubble(item){
-  if (!hasAudio[item.id]){
-    // no recording yet → greyed-out bubble saying "soon"
-    bubble("in", `<div class="voice off"><span class="vplay">${PLAY_ICON}</span><div class="wave">${waveformHTML(item.id)}</div><span class="dur">soon</span></div>`, "voicebub").style.padding = "0";
-    return;
-  }
   const el = bubble("in", `<div class="voice"><button class="vplay" aria-label="Play Haifa's voice message">${PLAY_ICON}</button><div class="wave">${waveformHTML(item.id)}</div><span class="dur">0:00</span></div>`, "voicebub");
   el.style.padding = "0";
 
@@ -95,6 +90,11 @@ function voiceBubble(item){
   const bars = [...el.querySelectorAll(".wave i")];
   const duration = el.querySelector(".dur");
   const audio = new Audio(`audio/${item.id}.mp3`);
+  audio.addEventListener("error", () => {
+    el.querySelector(".voice").classList.add("off");
+    button.disabled = true;
+    duration.textContent = "soon";
+  });
   const format = s => `0:${String(Math.max(0, Math.round(s))).padStart(2, "0")}`;
 
   audio.addEventListener("loadedmetadata", () => duration.textContent = format(audio.duration));
@@ -235,7 +235,4 @@ $("#copy").addEventListener("click", async e => {
 /* ---------- start-up ---------- */
 
 clearField();
-// Check which recordings exist, then show the question buttons
-Promise.all(DATA.map(d =>
-  fetch(`audio/${d.id}.mp3`, {method: "HEAD"}).then(r => hasAudio[d.id] = r.ok).catch(() => {})
-)).finally(createQuestionButtons);
+createQuestionButtons();
